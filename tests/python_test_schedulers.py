@@ -63,7 +63,7 @@ def main():
 
     #Round Robbin
     rr_result = round_robin_scheduling(processes.copy(), time_quantum=2)
-    print_results(rr_results, "Round Robin")
+    print_results(rr_result, "Round Robin")
     print_stats(rr_result, "Round Robin")
 
 
