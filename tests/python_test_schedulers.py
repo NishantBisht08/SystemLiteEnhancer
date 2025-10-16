@@ -5,6 +5,7 @@ from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
 from src.classical.srtf import srtf_scheduling
 from src.classical.preemptive_priority import preemptive_priority_scheduling
+from src.classical.round_robin import round_robin_scheduling
 
 
 
@@ -59,6 +60,11 @@ def main():
     preemptive_priority_result = preemptive_priority_scheduling(processes.copy())
     print_results(preemptive_priority_result, "Preemptive Priority")
     print_stats(preemptive_priority_result, "Preemptive Priority")
+
+    #Round Robbin
+    rr_result = round_robin_scheduling(processes.copy(), time_quantum=2)
+    print_results(rr_results, "Round Robin")
+    print_stats(rr_result, "Round Robin")
 
 
 if __name__ == "__main__":
