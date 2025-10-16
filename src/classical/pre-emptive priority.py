@@ -7,7 +7,7 @@ def preemptive_priority_scheduling(processes):
     n = len(processes)
     completed = 0
     current_time = 0
-    is_completed = [False] * n    #initialiced array with false(no process completed yet)
+    is_completed = [False] * n    #initialized array with false(no process completed yet)
 
     while completed < n:
         index = -1
@@ -46,3 +46,4 @@ def preemptive_priority_scheduling(processes):
             current_time += 1
 
     return processes
+
