@@ -3,6 +3,8 @@ from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
 from src.classical.srtf import srtf_scheduling
+from src.classical.preemptive_priority import preemptive_priority_scheduling
+
 
 
 def print_results(processes, algorithm_name):
@@ -51,6 +53,11 @@ def main():
     srtf_result = srtf_scheduling(processes.copy())
     print_results(srtf_result, "SRTF")
     print_stats(srtf_result, "SRTF")
+
+    #Preemptive Priority
+    preemptive_priority_result = preemptive_priority_scheduling(processes.copy())
+    print_results(preemptive_priority_result, "Preemptive Priority")
+    print_stats(preemptive_priority_result, "Preemptive Priority")
 
 
 if __name__ == "__main__":
