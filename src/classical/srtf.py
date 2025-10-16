@@ -46,3 +46,8 @@ def srtf_scheduling(processes):
             current_time += 1
 
     return processes
+
+
+
+
+
