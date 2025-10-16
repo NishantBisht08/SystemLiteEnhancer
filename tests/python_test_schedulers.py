@@ -2,12 +2,27 @@ from src.classical.process import Process
 from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
+from src.classical.srtf import srtf_scheduling
+
 
 def print_results(processes, algorithm_name):
     print(f"\nResults for {algorithm_name}:")
     print("PID\tArrival\tBurst\tPriority\tWaiting\tTurnaround")
     for p in processes:
         print(f"{p.pid}\t{p.arrival_time}\t{p.burst_time}\t{p.priority}\t\t{p.waiting_time}\t{p.turnaround_time}")
+
+def print_stats(processes, algorithm_name):
+    n = len(processes)
+    total_waiting = sum(p.waiting_time for p in processes)
+    total_turnaround = sum(p.turnaround_time for p in processes)
+    avg_waiting = total_waiting / n
+    avg_turnaround = total_turnaround / n
+    throughput = n / max(p.completion_time for p in processes)
+    print(f"\nStats for {algorithm_name}:")
+    print(f"Average Waiting Time: {avg_waiting:.2f}")
+    print(f"Average Turnaround Time: {avg_turnaround:.2f}")
+    print(f"Throughput: {throughput:.2f} processes/unit time")
+
 
 def main():
     processes = [
@@ -20,14 +35,30 @@ def main():
     #  FCFS
     fcfs_result = fcfs_scheduling(processes.copy())
     print_results(fcfs_result, "FCFS")
+    print_stats(fcfs_result, "FCFS")
 
     #  SJF
     sjf_result = sjf_scheduling(processes.copy())
     print_results(sjf_result, "SJF")
+    print_stats(sjf_result, "SJF")
 
     #  Priority
     priority_result = priority_scheduling(processes.copy())
     print_results(priority_result, "Priority")
+    print_stats(priority_result, "Priority")
+    
+    # SRTF
+    srtf_result = srtf_scheduling(processes.copy())
+    print_results(srtf_result, "SRTF")
+    print_stats(srtf_result, "SRTF")
+
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
