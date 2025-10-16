@@ -1,3 +1,4 @@
+#python -m tests.python_test_schedulers
 from src.classical.process import Process
 from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
