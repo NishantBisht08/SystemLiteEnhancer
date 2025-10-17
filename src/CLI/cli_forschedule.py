@@ -3,6 +3,9 @@ from src.classical.process import Process
 from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
+from src.classical.srtf import srtf_scheduling
+from src.classical.preemptive_priority import preemptive_priority_scheduling
+
 
 def input_process():
     pid = int(input("Enter process ID: "))
@@ -17,7 +20,7 @@ def main():
     for _ in range(n):
         processes.append(input_process())
 
-    print("Select Algorithm: 1- FCFS, 2- SJF, 3- Priority")
+    print("Select Algorithm: 1- FCFS, 2- SJF, 3- Priority, 4- SRTF, 5- Preemptive Priority")
     choice = input()
 
     if choice == '1':
@@ -29,6 +32,12 @@ def main():
     elif choice == '3':
         result = priority_scheduling(processes)
         algo_name = "Priority"
+    elif choice == '4':
+        result = srtf_scheduling(processes)
+        algo_name = "SRTF"
+    elif choice == '5':
+        result = preemptive_priority_scheduling(processes)
+        algo_name = "Preemptive Priority"        
     else:
         print("Invalid choice")
         return
@@ -40,3 +49,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
