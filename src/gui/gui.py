@@ -7,6 +7,9 @@ from src.classical.process import Process
 from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
+from src.classical.srtf import srtf_scheduling
+from src.classical.preemptive_priority import preemptive_priority_scheduling
+
 
 #  Create the main window
 root = tk.Tk()
@@ -42,6 +45,10 @@ def run_scheduler():
         result = sjf_scheduling(processes.copy())
     elif algo == "Priority":
         result = priority_scheduling(processes.copy())
+    elif algo == "SRTF":
+        result = srtf_scheduling(processes.copy())
+    elif algo == "Preemptive Priority":
+        result = preemptive_priority_scheduling(processes.copy())
     else:
         messagebox.showerror("Error", "Please select an algorithm!")
         return
@@ -53,6 +60,7 @@ def run_scheduler():
         tree.insert("", tk.END, values=[
             p.pid, p.arrival_time, p.burst_time, p.priority, p.waiting_time, p.turnaround_time
         ])
+
 
 # Input fields for process details
 input_frame = tk.Frame(root)
@@ -83,8 +91,9 @@ algo_frame = tk.Frame(root)
 algo_frame.pack(pady=8)
 
 tk.Label(algo_frame, text="Algorithm:").pack(side=tk.LEFT)
-for name in ["FCFS", "SJF", "Priority"]:
+for name in ["FCFS", "SJF", "Priority", "SRTF", "Preemptive Priority"]:
     tk.Radiobutton(algo_frame, text=name, variable=algo_var, value=name).pack(side=tk.LEFT, padx=5)
+
 
 run_btn = tk.Button(root, text="Run Scheduler", command=run_scheduler)
 run_btn.pack(pady=8)
