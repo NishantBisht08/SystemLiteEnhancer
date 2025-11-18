@@ -3,6 +3,8 @@ from src.classical.process import Process
 from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
+from src.classical.drr import drr_scheduling
+from src.classical.drr0 import drr0_scheduling
 
 def input_process():
     pid = int(input("Enter process ID: "))
@@ -17,7 +19,7 @@ def main():
     for _ in range(n):
         processes.append(input_process())
 
-    print("Select Algorithm: 1- FCFS, 2- SJF, 3- Priority")
+    print("Select Algorithm: 1- FCFS, 2- SJF, 3- Priority ,4- Dynamic Round Robin (Varied AT) ,5- Dynamic Round Robin (AT = 0)")
     choice = input()
 
     if choice == '1':
@@ -29,6 +31,13 @@ def main():
     elif choice == '3':
         result = priority_scheduling(processes)
         algo_name = "Priority"
+    elif choice == '4':
+        result = drr_scheduling(processes)
+        algo_name = "Dynamic RR (Varied AT)"
+    elif choice == '5':
+        result = drr0_scheduling(processes)
+        algo_name = "Dynamic RR (AT = 0)"
+
     else:
         print("Invalid choice")
         return

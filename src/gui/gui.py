@@ -7,6 +7,9 @@ from src.classical.process import Process
 from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
+from src.classical.drr import drr_scheduling
+from src.classical.drr0 import drr0_scheduling
+
 
 #  Create the main window
 root = tk.Tk()
@@ -42,6 +45,11 @@ def run_scheduler():
         result = sjf_scheduling(processes.copy())
     elif algo == "Priority":
         result = priority_scheduling(processes.copy())
+   elif algo == "Dynamic RR (Varied AT)":
+    result = drr_scheduling(processes.copy())
+   elif algo == "Dynamic RR (AT = 0)":
+    result = drr0_scheduling(processes.copy())
+
     else:
         messagebox.showerror("Error", "Please select an algorithm!")
         return
@@ -83,7 +91,7 @@ algo_frame = tk.Frame(root)
 algo_frame.pack(pady=8)
 
 tk.Label(algo_frame, text="Algorithm:").pack(side=tk.LEFT)
-for name in ["FCFS", "SJF", "Priority"]:
+for name in ["FCFS", "SJF", "Priority","Dynamic RR (Varied AT)","Dynamic RR (AT = 0)"]:
     tk.Radiobutton(algo_frame, text=name, variable=algo_var, value=name).pack(side=tk.LEFT, padx=5)
 
 run_btn = tk.Button(root, text="Run Scheduler", command=run_scheduler)
