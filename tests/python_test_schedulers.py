@@ -6,6 +6,11 @@ from src.classical.nonpreemtive_priority import priority_scheduling
 from src.classical.srtf import srtf_scheduling
 from src.classical.preemptive_priority import preemptive_priority_scheduling
 from src.classical.round_robin import round_robin_scheduling
+from src.classical.mpp import mpp_scheduling
+from src.classical.drr0 import drr0_scheduling
+from src.classical.drr import drr_scheduling
+
+
 
 
 
@@ -66,10 +71,25 @@ def main():
     print_results(rr_result, "Round Robin")
     print_stats(rr_result, "Round Robin")
 
+    # MPP (Modified Priority Preemptive)
+    mpp_result = mpp_scheduling(processes.copy())
+    print_results(mpp_result, "MPP")
+    print_stats(mpp_result, "MPP")
+    
+    # DRR0
+    drr0_result = drr0_scheduling(processes.copy())
+    print_results(drr0_result, "DRR0")
+    print_stats(drr0_result, "DRR0")
+
+    # DRR (arrival-time version)
+    drr_result = drr_scheduling(processes.copy(), initial_tq=4)
+    print_results(drr_result, "DRR")
+    print_stats(drr_result, "DRR")
+
+
 
 if __name__ == "__main__":
     main()
-
 
 
 
