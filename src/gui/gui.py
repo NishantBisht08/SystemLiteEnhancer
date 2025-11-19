@@ -9,6 +9,10 @@ from src.classical.sjf import sjf_scheduling
 from src.classical.nonpreemtive_priority import priority_scheduling
 from src.classical.srtf import srtf_scheduling
 from src.classical.preemptive_priority import preemptive_priority_scheduling
+from src.classical.mpp import mpp_scheduling
+from src.classical.round_robin import round_robin_scheduling
+from src.classical.drr0 import drr0_scheduling
+from src.classical.drr import drr_scheduling
 
 
 #  Create the main window
@@ -49,6 +53,19 @@ def run_scheduler():
         result = srtf_scheduling(processes.copy())
     elif algo == "Preemptive Priority":
         result = preemptive_priority_scheduling(processes.copy())
+    elif algo == "MPP":
+        result = mpp_scheduling(processes.copy())
+    elif algo == "Round Robin":
+        result = round_robin_scheduling(processes.copy(),time_quantum=2)
+        
+    elif algo == "DRR0":
+        result = drr0_scheduling(processes.copy())
+
+    elif algo == "DRR":
+        # fixed quantum = 4 OR popup input
+        result = drr_scheduling(processes.copy(), initial_tq=4)
+
+
     else:
         messagebox.showerror("Error", "Please select an algorithm!")
         return
@@ -91,7 +108,8 @@ algo_frame = tk.Frame(root)
 algo_frame.pack(pady=8)
 
 tk.Label(algo_frame, text="Algorithm:").pack(side=tk.LEFT)
-for name in ["FCFS", "SJF", "Priority", "SRTF", "Preemptive Priority"]:
+for name in ["FCFS", "SJF", "Priority", "SRTF", "Preemptive Priority", "MPP","Round Robin","DRR0","DRR"]:
+
     tk.Radiobutton(algo_frame, text=name, variable=algo_var, value=name).pack(side=tk.LEFT, padx=5)
 
 
