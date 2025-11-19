@@ -13,6 +13,7 @@ from src.classical.mpp import mpp_scheduling
 from src.classical.round_robin import round_robin_scheduling
 from src.classical.drr0 import drr0_scheduling
 from src.classical.drr import drr_scheduling
+from src.classical.ampp import improved_mpp_scheduling
 
 
 #  Create the main window
@@ -64,7 +65,9 @@ def run_scheduler():
     elif algo == "DRR":
         # fixed quantum = 4 OR popup input
         result = drr_scheduling(processes.copy(), initial_tq=4)
-
+        
+    elif algo == "AMPP":
+        result = improved_mpp_scheduling(processes.copy())
 
     else:
         messagebox.showerror("Error", "Please select an algorithm!")
@@ -108,7 +111,7 @@ algo_frame = tk.Frame(root)
 algo_frame.pack(pady=8)
 
 tk.Label(algo_frame, text="Algorithm:").pack(side=tk.LEFT)
-for name in ["FCFS", "SJF", "Priority", "SRTF", "Preemptive Priority", "MPP","Round Robin","DRR0","DRR"]:
+for name in ["FCFS", "SJF", "Priority", "SRTF", "Preemptive Priority", "MPP","Round Robin","DRR0","DRR","AMPP"]:
 
     tk.Radiobutton(algo_frame, text=name, variable=algo_var, value=name).pack(side=tk.LEFT, padx=5)
 
@@ -126,3 +129,4 @@ tree.pack(pady=8)
 
 # Start the main GUI event loop
 root.mainloop()
+
