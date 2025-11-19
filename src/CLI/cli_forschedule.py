@@ -9,7 +9,7 @@ from src.classical.mpp import mpp_scheduling
 from src.classical.round_robin import round_robin_scheduling
 from src.classical.drr0 import drr0_scheduling
 from src.classical.drr import drr_scheduling
-
+from src.classical.ampp import improved_mpp_scheduling
 
 
 
@@ -26,7 +26,7 @@ def main():
     for _ in range(n):
         processes.append(input_process())
 
-    print("Select Algorithm: 1- FCFS, 2- SJF, 3- Priority, 4- SRTF, 5- Preemptive Priority, 6- MPP, 7-Round Robin, 8-DRR0,9-DRR")
+    print("Select Algorithm: 1- FCFS, 2- SJF, 3- Priority, 4- SRTF, 5- Preemptive Priority, 6- MPP, 7-Round Robin, 8-DRR0,9-DRR,10-AMPP")
 
     choice = input()
 
@@ -63,7 +63,10 @@ def main():
         tq = int(input("Enter initial time quantum: "))
         result = drr_scheduling(processes, initial_tq=tq)
         algo_name = "DRR"
-
+        
+    elif choice == '10':
+        result = improved_mpp_scheduling(processes)
+        algo_name = "AMPP"
     
     else:
         print("Invalid choice")
@@ -76,5 +79,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
