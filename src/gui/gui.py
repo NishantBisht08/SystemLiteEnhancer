@@ -14,7 +14,6 @@ from src.classical.round_robin import round_robin_scheduling
 from src.classical.drr0 import drr0_scheduling
 from src.classical.drr import drr_scheduling
 
-
 #  Create the main window
 root = tk.Tk()
 root.title("Process Scheduler GUI")
@@ -24,18 +23,17 @@ processes = []
 
 #  Function to add a process
 def add_process():
-        
-        pid = int(pid_entry.get())
-        arrival = int(arrival_entry.get())
-        burst = int(burst_entry.get())
-        priority = int(priority_entry.get() or 0)  # Priority can be empty
-        processes.append(Process(pid, burst, priority, arrival))
-        # Clear entries after adding
-        pid_entry.delete(0, tk.END)
-        arrival_entry.delete(0, tk.END)
-        burst_entry.delete(0, tk.END)
-        priority_entry.delete(0, tk.END)
-        messagebox.showinfo("Process Added", f"Added process ID {pid}")
+    pid = int(pid_entry.get())
+    arrival = int(arrival_entry.get())
+    burst = int(burst_entry.get())
+    priority = int(priority_entry.get() or 0)  # Priority can be empty
+    processes.append(Process(pid, burst, priority, arrival))
+    # Clear entries after adding
+    pid_entry.delete(0, tk.END)
+    arrival_entry.delete(0, tk.END)
+    burst_entry.delete(0, tk.END)
+    priority_entry.delete(0, tk.END)
+    messagebox.showinfo("Process Added", f"Added process ID {pid}")
 
 # Function to run selected scheduling algorithm
 def run_scheduler():
@@ -56,16 +54,12 @@ def run_scheduler():
     elif algo == "MPP":
         result = mpp_scheduling(processes.copy())
     elif algo == "Round Robin":
-        result = round_robin_scheduling(processes.copy(),time_quantum=2)
-        
+        result = round_robin_scheduling(processes.copy(), time_quantum=2)
     elif algo == "DRR0":
         result = drr0_scheduling(processes.copy())
-
     elif algo == "DRR":
         # fixed quantum = 4 OR popup input
         result = drr_scheduling(processes.copy(), initial_tq=4)
-
-
     else:
         messagebox.showerror("Error", "Please select an algorithm!")
         return
@@ -108,10 +102,8 @@ algo_frame = tk.Frame(root)
 algo_frame.pack(pady=8)
 
 tk.Label(algo_frame, text="Algorithm:").pack(side=tk.LEFT)
-for name in ["FCFS", "SJF", "Priority", "SRTF", "Preemptive Priority", "MPP","Round Robin","DRR0","DRR"]:
-
+for name in ["FCFS", "SJF", "Priority", "SRTF", "Preemptive Priority", "MPP", "Round Robin", "DRR0", "DRR"]:
     tk.Radiobutton(algo_frame, text=name, variable=algo_var, value=name).pack(side=tk.LEFT, padx=5)
-
 
 run_btn = tk.Button(root, text="Run Scheduler", command=run_scheduler)
 run_btn.pack(pady=8)
