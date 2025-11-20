@@ -1,4 +1,4 @@
-#python -m tests.python_test_schedulers
+# python -m tests.python_test_schedulers
 from src.classical.process import Process
 from src.classical.fcfs import fcfs_scheduling
 from src.classical.sjf import sjf_scheduling
@@ -9,10 +9,9 @@ from src.classical.round_robin import round_robin_scheduling
 from src.classical.mpp import mpp_scheduling
 from src.classical.drr0 import drr0_scheduling
 from src.classical.drr import drr_scheduling
+from tests.input_fixed_30 import get_fixed_30_processes
 
-
-
-
+import matplotlib.pyplot as plt
 
 def print_results(processes, algorithm_name):
     print(f"\nResults for {algorithm_name}:")
@@ -22,77 +21,96 @@ def print_results(processes, algorithm_name):
 
 def print_stats(processes, algorithm_name):
     n = len(processes)
-    total_waiting = sum(p.waiting_time for p in processes)
-    total_turnaround = sum(p.turnaround_time for p in processes)
-    avg_waiting = total_waiting / n
-    avg_turnaround = total_turnaround / n
+    avg_waiting = sum(p.waiting_time for p in processes) / n
+    avg_turnaround = sum(p.turnaround_time for p in processes) / n
     throughput = n / max(p.completion_time for p in processes)
     print(f"\nStats for {algorithm_name}:")
     print(f"Average Waiting Time: {avg_waiting:.2f}")
     print(f"Average Turnaround Time: {avg_turnaround:.2f}")
     print(f"Throughput: {throughput:.2f} processes/unit time")
 
-
-def main():
-    processes = [
+def get_initial_processes():
+    # Always returns fresh list of Process objects
+    return [
         Process(pid=1, burst_time=6, priority=2, arrival_time=1),
         Process(pid=2, burst_time=8, priority=1, arrival_time=1),
         Process(pid=3, burst_time=7, priority=3, arrival_time=2),
         Process(pid=4, burst_time=3, priority=2, arrival_time=3),
     ]
 
-    #  FCFS
-    fcfs_result = fcfs_scheduling(processes.copy())
-    print_results(fcfs_result, "FCFS")
-    print_stats(fcfs_result, "FCFS")
-
-    #  SJF
-    sjf_result = sjf_scheduling(processes.copy())
-    print_results(sjf_result, "SJF")
-    print_stats(sjf_result, "SJF")
-
-    #  Priority
-    priority_result = priority_scheduling(processes.copy())
-    print_results(priority_result, "Priority")
-    print_stats(priority_result, "Priority")
+def copy_processes(processes):
+    """Return new Process instances with original fields (fresh for each algorithm)."""
+    return [
+        Process(pid=p.pid, burst_time=p.burst_time, priority=p.priority, arrival_time=p.arrival_time)
+        for p in processes
+    ]
     
-    # SRTF
-    srtf_result = srtf_scheduling(processes.copy())
-    print_results(srtf_result, "SRTF")
-    print_stats(srtf_result, "SRTF")
+def plot_metrics(results_data):
+    algos = [r['algo'] for r in results_data]
+    avg_waits = [r['avg_wait'] for r in results_data]
+    avg_tats = [r['avg_tat'] for r in results_data]
 
-    #Preemptive Priority
-    preemptive_priority_result = preemptive_priority_scheduling(processes.copy())
-    print_results(preemptive_priority_result, "Preemptive Priority")
-    print_stats(preemptive_priority_result, "Preemptive Priority")
+    plt.bar(algos, avg_waits, color='dodgerblue')
+    plt.title('Average Waiting Time (4 Processes)')
+    plt.xlabel('Algorithm')
+    plt.ylabel('Average Waiting')
+    plt.xticks(rotation=25)
+    plt.tight_layout()
+    plt.show()
 
-    #Round Robbin
-    rr_result = round_robin_scheduling(processes.copy(), time_quantum=2)
-    print_results(rr_result, "Round Robin")
-    print_stats(rr_result, "Round Robin")
+    plt.bar(algos, avg_tats, color='orange')
+    plt.title('Average Turnaround Time (4 Processes)')
+    plt.xlabel('Algorithm')
+    plt.ylabel('Average Turnaround')
+    plt.xticks(rotation=25)
+    plt.tight_layout()
+    plt.show()
 
-    # MPP (Modified Priority Preemptive)
-    mpp_result = mpp_scheduling(processes.copy())
-    print_results(mpp_result, "MPP")
-    print_stats(mpp_result, "MPP")
+def main():
+    results_data_4 = []
+    # === 4-process fixed input ===
+    print("\n====== Results for 4 Fixed Processes ======")
+    for name, sched, kwargs in [
+        ("FCFS", fcfs_scheduling, {}),
+        ("SJF", sjf_scheduling, {}),
+        ("Priority", priority_scheduling, {}),
+        ("SRTF", srtf_scheduling, {}),
+        ("Preemptive Priority", preemptive_priority_scheduling, {}),
+        ("Round Robin", round_robin_scheduling, {'time_quantum':2}),
+        ("MPP", mpp_scheduling, {}),
+        ("DRR0", drr0_scheduling, {}),
+        ("DRR", drr_scheduling, {'initial_tq':4})
+    ]:
+        procs = get_initial_processes()
+        result = sched(procs, **kwargs) if kwargs else sched(procs)
+        print_results(result, name)
+        print_stats(result, name)
+        
+        avg_waiting = sum(p.waiting_time for p in result) / len(result)
+        avg_turnaround = sum(p.turnaround_time for p in result) / len(result)
+        results_data_4.append({'algo': name, 'avg_wait': avg_waiting, 'avg_tat': avg_turnaround})
+
+    # Plot only for 4 processes
+    plot_metrics(results_data_4)
     
-    # DRR0
-    drr0_result = drr0_scheduling(processes.copy())
-    print_results(drr0_result, "DRR0")
-    print_stats(drr0_result, "DRR0")
-
-    # DRR (arrival-time version)
-    drr_result = drr_scheduling(processes.copy(), initial_tq=4)
-    print_results(drr_result, "DRR")
-    print_stats(drr_result, "DRR")
-
-
+    # === 30-process fixed input from separate file ===
+    print("\n====== Results for 30 Fixed Processes ======")
+    fixed_30 = get_fixed_30_processes()
+    for name, sched, kwargs in [
+        ("FCFS", fcfs_scheduling, {}),
+        ("SJF", sjf_scheduling, {}),
+        ("Priority", priority_scheduling, {}),
+        ("SRTF", srtf_scheduling, {}),
+        ("Preemptive Priority", preemptive_priority_scheduling, {}),
+        ("Round Robin", round_robin_scheduling, {'time_quantum':2}),
+        ("MPP", mpp_scheduling, {}),
+        ("DRR0", drr0_scheduling, {}),
+        ("DRR", drr_scheduling, {'initial_tq':4})
+    ]:
+        procs = copy_processes(fixed_30)
+        result = sched(procs, **kwargs) if kwargs else sched(procs)
+        print_results(result, f"{name} (30 Fixed)")
+        print_stats(result, f"{name} (30 Fixed)")
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
